@@ -50,7 +50,7 @@
       }
       
       .lock-key{
-        width:120px;height:120px;
+        width:140px;height:140px;
         background:rgba(255,255,255,0.95);
         border-radius:20px;
         display:flex;
@@ -61,12 +61,15 @@
         transition:all 0.4s cubic-bezier(0.4,0,0.2,1);
         animation:gentleFloat 4s ease-in-out infinite;
         border:1px solid rgba(255,255,255,0.2);
+        position:relative;
       }
       
       .lock-key img{
-        width:60px;height:60px;
-        opacity:0.8;
+        width:80px;height:80px;
+        opacity:0.9;
         transition:all 0.3s ease;
+        object-fit:contain;
+        filter:drop-shadow(0 2px 8px rgba(0,0,0,0.2));
       }
       
       .lock-key:hover{
@@ -227,7 +230,7 @@
         心を込めて
       </div>
       <div class="lock-key" id="unlockKey">
-        <img src="key.png" alt="鍵">
+        <img src="key.png" alt="鍵" onerror="this.style.display='none'; this.parentNode.innerHTML='🔑'; this.parentNode.style.fontSize='60px';">
       </div>
       <div class="lock-hint">鍵に触れてお楽しみください</div>
     </div>
@@ -391,6 +394,19 @@
       const modelViewer = document.getElementById('mv');
       console.log('Model viewer initialized');
       console.log('GLB source:', modelViewer.src);
+      
+      // Check key image loading
+      const keyImg = document.querySelector('.lock-key img');
+      if (keyImg) {
+        keyImg.onload = function() {
+          console.log('Key image loaded successfully');
+        };
+        keyImg.onerror = function() {
+          console.error('Key image failed to load');
+          console.log('Fallback to emoji key');
+        };
+        console.log('Key image source:', keyImg.src);
+      }
       
       // Handle successful load
       modelViewer.addEventListener('load', function() {
