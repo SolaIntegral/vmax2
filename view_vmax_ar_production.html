@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Happy Birthday — VMAX AR</title>
+    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+    <style>
+      :root{
+        --bg:#0b0b0b;
+        --fg:#fff;
+        --muted:#bfbfbf;
+        --accent:#ffce4a;
+      }
+      html,body{height:100%;margin:0;background:var(--bg);color:var(--fg);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
+      header{position:fixed;left:0;right:0;top:0;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;background:linear-gradient(180deg, rgba(0,0,0,.7), rgba(0,0,0,0));z-index:10}
+      .brand{font-weight:700;letter-spacing:.3px}
+      .cta{display:flex;gap:8px;align-items:center}
+      .btn{appearance:none;border:0;border-radius:12px;padding:10px 14px;background:#fff;color:#111;font-weight:600;cursor:pointer}
+      .btn.secondary{background:#222;color:#fff;border:1px solid #333}
+      .btn:active{transform:translateY(1px)}
+      model-viewer{width:100%;height:100%;--progress-bar-color:var(--accent);}
+      footer{position:fixed;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:linear-gradient(0deg, rgba(0,0,0,.7), rgba(0,0,0,0));font-size:12px;color:var(--muted)}
+      .credit a{color:var(--muted)}
+      .help{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+      .pill{background:#222;color:#ddd;border-radius:999px;padding:6px 10px;border:1px solid #333}
+      .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:80px;background:#111;border:1px solid #333;color:#fff;padding:10px 14px;border-radius:10px;display:none}
+      .fab{position:fixed;right:16px;bottom:16px;background:#fff;color:#111;border-radius:999px;padding:12px 16px;text-decoration:none;font-weight:700}
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="brand">🎂 Happy Birthday — VMAX AR</div>
+      <div class="cta">
+        <button class="btn" id="btnAR">Open in AR</button>
+        <button class="btn secondary" id="btnShare">Share</button>
+      </div>
+    </header>
+
+    <model-viewer id="mv"
+      poster="poster.png"
+      src="vmax_bike_only_v2_black.glb"
+      ios-src="vmax_bike_only_v2_black.usdz"
+      camera-controls
+      ar ar-modes="scene-viewer quick-look webxr"
+      ar-scale="fixed"
+      camera-orbit="0deg 75deg 3m"
+      min-camera-orbit="auto auto 2m"
+      max-camera-orbit="auto auto 6m"
+      camera-target="0m 0m 0m"
+      field-of-view="30deg"
+      exposure="1.2"
+      shadow-intensity="1">
+    </model-viewer>
+
+    <!-- Android direct fallback (Scene Viewer) -->
+    <a class="fab" rel="ar" href="vmax_bike_only_v2_black.glb">AR</a>
+
+    <footer>
+      <div class="credit">
+        Based on <a href="https://sketchfab.com/3d-models/v-max-on-road-onjaaninoja-bridge-60d36a5b91ec428ab5528b59028a205e">"V Max-on- Road- Onjaaninoja_bridge"</a> by <a href="https://sketchfab.com/TG13730">TG13730</a> (CC-BY-4.0)
+      </div>
+      <div class="help">
+        <span class="pill">① Tap “Open in AR”</span>
+        <span class="pill">② Point to floor</span>
+        <span class="pill">③ Pinch to zoom / drag to rotate</span>
+      </div>
+    </footer>
+
+    <div class="toast" id="toast"></div>
+
+    <script>
+      const mv = document.getElementById('mv');
+      const toast = document.getElementById('toast');
+      const showToast = (msg) => {
+        toast.textContent = msg;
+        toast.style.display = 'block';
+        setTimeout(()=> toast.style.display='none', 2200);
+      };
+
+      document.getElementById('btnAR').addEventListener('click', async () => {
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        if (isIOS) {
+          try {
+            const res = await fetch('vmax_bike_only_v2_black.usdz', { method: 'HEAD' });
+            if (!res.ok) showToast('iOS用USDZが見つかりません（後で追加してください）');
+          } catch (e) {
+            showToast('iOS用USDZが見つかりません（後で追加してください）');
+          }
+        }
+        mv.activateAR();
+      });
+
+      document.getElementById('btnShare').addEventListener('click', async () => {
+        const data = { title: document.title, url: location.href, text: 'VMAXをARで配置してみてね！' };
+        if (navigator.share) {
+          try { await navigator.share(data); } catch(e){}
+        } else {
+          try {
+            await navigator.clipboard.writeText(location.href);
+            showToast('URLをコピーしました');
+          } catch(e) {
+            showToast('この端末では共有がサポートされていません');
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
