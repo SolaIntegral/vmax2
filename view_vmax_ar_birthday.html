@@ -8,12 +8,14 @@
     <style>
       html,body{height:100%;margin:0;background:#111;font-family:'Hiragino Sans','ヒラギノ角ゴシック',sans-serif;overflow:hidden;}
       
-      /* Lock Screen Styles */
+      /* Lock Screen Styles - Elegant Birthday Design */
       .lock-screen{
         position:fixed;
         top:0;left:0;
         width:100%;height:100%;
-        background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);
+        background:linear-gradient(135deg,#2c3e50 0%,#34495e 50%,#2c3e50 100%);
+        background-size:400% 400%;
+        animation:gradientShift 8s ease infinite;
         display:flex;
         flex-direction:column;
         justify-content:center;
@@ -28,61 +30,83 @@
       }
       
       .lock-title{
-        color:#fff;
-        font:32px/1.3 'Hiragino Sans','ヒラギノ角ゴシック',sans-serif;
+        color:#f8f9fa;
+        font:28px/1.4 'Hiragino Sans','ヒラギノ角ゴシック',sans-serif;
+        font-weight:300;
         text-align:center;
-        margin-bottom:15px;
-        text-shadow:0 2px 10px rgba(0,0,0,0.3);
-        animation:titleGlow 3s ease-in-out infinite alternate;
+        margin-bottom:20px;
+        text-shadow:0 2px 8px rgba(0,0,0,0.3);
+        letter-spacing:1px;
       }
       
       .lock-subtitle{
-        color:rgba(255,255,255,0.9);
-        font:18px/1.4 'Hiragino Sans','ヒラギノ角ゴシック',sans-serif;
+        color:rgba(248,249,250,0.85);
+        font:16px/1.6 'Hiragino Sans','ヒラギノ角ゴシック',sans-serif;
+        font-weight:300;
         text-align:center;
-        margin-bottom:50px;
-        text-shadow:0 1px 5px rgba(0,0,0,0.2);
+        margin-bottom:60px;
+        text-shadow:0 1px 3px rgba(0,0,0,0.2);
+        max-width:300px;
       }
       
       .lock-key{
-        width:140px;height:140px;
-        background:linear-gradient(145deg,#ffd700,#ffed4e);
-        border-radius:50%;
+        width:120px;height:120px;
+        background:rgba(255,255,255,0.95);
+        border-radius:20px;
         display:flex;
         justify-content:center;
         align-items:center;
-        font-size:70px;
         cursor:pointer;
-        box-shadow:0 20px 40px rgba(255,215,0,0.3),inset 0 2px 10px rgba(255,255,255,0.3);
+        box-shadow:0 8px 32px rgba(0,0,0,0.3),inset 0 1px 0 rgba(255,255,255,0.8);
+        transition:all 0.4s cubic-bezier(0.4,0,0.2,1);
+        animation:gentleFloat 4s ease-in-out infinite;
+        border:1px solid rgba(255,255,255,0.2);
+      }
+      
+      .lock-key img{
+        width:60px;height:60px;
+        opacity:0.8;
         transition:all 0.3s ease;
-        animation:keyFloat 3s ease-in-out infinite;
       }
       
       .lock-key:hover{
+        transform:translateY(-5px) scale(1.05);
+        box-shadow:0 12px 40px rgba(0,0,0,0.4),inset 0 1px 0 rgba(255,255,255,0.9);
+        background:rgba(255,255,255,1);
+      }
+      
+      .lock-key:hover img{
+        opacity:1;
         transform:scale(1.1);
-        box-shadow:0 25px 50px rgba(255,215,0,0.4),inset 0 2px 15px rgba(255,255,255,0.4);
       }
       
       .lock-key:active{
-        transform:scale(0.95);
+        transform:translateY(-2px) scale(1.02);
       }
       
       .lock-hint{
-        color:rgba(255,255,255,0.7);
-        font:16px/1.4 'Hiragino Sans','ヒラギノ角ゴシック',sans-serif;
+        color:rgba(248,249,250,0.7);
+        font:14px/1.4 'Hiragino Sans','ヒラギノ角ゴシック',sans-serif;
+        font-weight:300;
         text-align:center;
         margin-top:40px;
-        animation:pulse 2s infinite;
+        animation:subtlePulse 3s ease-in-out infinite;
       }
       
-      @keyframes keyFloat{
+      @keyframes gentleFloat{
         0%,100%{transform:translateY(0px);}
-        50%{transform:translateY(-15px);}
+        50%{transform:translateY(-8px);}
       }
       
-      @keyframes titleGlow{
-        0%{text-shadow:0 2px 10px rgba(0,0,0,0.3);}
-        100%{text-shadow:0 2px 20px rgba(255,255,255,0.3),0 0 30px rgba(255,215,0,0.3);}
+      @keyframes gradientShift{
+        0%{background-position:0% 50%;}
+        50%{background-position:100% 50%;}
+        100%{background-position:0% 50%;}
+      }
+      
+      @keyframes subtlePulse{
+        0%,100%{opacity:0.7;}
+        50%{opacity:1;}
       }
       
       @keyframes pulse{
@@ -96,18 +120,35 @@
         100%{opacity:0;transform:translateY(-60px) scale(0.5);}
       }
       
-      /* AR Content Styles */
-      .ar-content{
-        opacity:0;
-        transition:opacity 1s ease-in-out 0.5s;
-      }
-      .ar-content.show{
-        opacity:1;
+      @keyframes elegantFloat{
+        0%{opacity:0;transform:translateY(10px) scale(0.3);}
+        20%{opacity:1;transform:translateY(0px) scale(1);}
+        80%{opacity:1;transform:translateY(-20px) scale(0.8);}
+        100%{opacity:0;transform:translateY(-40px) scale(0.3);}
       }
       
+      /* Model Viewer Styles */
       model-viewer{
         width:100%;
         height:100%;
+        z-index:-1;
+        transition:z-index 0.1s ease 0.8s;
+        --progress-bar-color:#ffd700;
+      }
+      
+      model-viewer.show{
+        z-index:1;
+      }
+      
+      /* AR Content Styles */
+      .ar-content{
+        opacity:0;
+        z-index:-1;
+        transition:opacity 1s ease-in-out 0.5s, z-index 0.1s ease 0.8s;
+      }
+      .ar-content.show{
+        opacity:1;
+        z-index:10;
       }
       
       .birthday-message{
@@ -174,97 +215,25 @@
       }
       
       .credit a{color:#aaa;}
-      
-      /* Loading indicator */
-      .loading-overlay{
-        position:absolute;
-        top:50%;left:50%;
-        transform:translate(-50%,-50%);
-        background:rgba(0,0,0,0.8);
-        color:#fff;
-        padding:20px;
-        border-radius:10px;
-        text-align:center;
-        z-index:100;
-        font:14px/1.4 'Hiragino Sans','ヒラギノ角ゴシック',sans-serif;
-      }
-      
-      .loading-spinner{
-        width:40px;height:40px;
-        border:4px solid #333;
-        border-top:4px solid #ffd700;
-        border-radius:50%;
-        animation:spin 1s linear infinite;
-        margin:0 auto 10px;
-      }
-      
-      @keyframes spin{
-        0%{transform:rotate(0deg);}
-        100%{transform:rotate(360deg);}
-      }
-      
-      /* Error message */
-      .error-message{
-        position:absolute;
-        top:50%;left:50%;
-        transform:translate(-50%,-50%);
-        background:rgba(255,0,0,0.9);
-        color:#fff;
-        padding:20px;
-        border-radius:10px;
-        text-align:center;
-        z-index:100;
-        font:14px/1.4 'Hiragino Sans','ヒラギノ角ゴシック',sans-serif;
-        display:none;
-      }
     </style>
   </head>
   <body>
     <!-- Lock Screen -->
     <div class="lock-screen" id="lockScreen">
-      <div class="lock-title">🎁 パパへの特別なプレゼント 🎁</div>
+      <div class="lock-title">お誕生日おめでとうございます</div>
       <div class="lock-subtitle">
-        パパへ<br>
-        ずっと欲しがってたVmaxのAR体験楽しんでね！
+        愛するパパへ<br>
+        特別なVmaxのAR体験をご用意いたしました<br>
+        心を込めて
       </div>
-      <div class="lock-key" id="unlockKey">🔑</div>
-      <div class="lock-hint">✨ Vmaxの鍵をタップしてね ✨</div>
+      <div class="lock-key" id="unlockKey">
+        <img src="key.png" alt="鍵">
+      </div>
+      <div class="lock-hint">鍵に触れてお楽しみください</div>
     </div>
 
     <!-- AR Content (initially hidden) -->
     <div class="ar-content" id="arContent">
-      <model-viewer id="mv"
-        poster="poster.png"
-        src="vmax_bike_only_v2_black.glb"
-        ios-src="vmax_bike_only_v2_black.usdz"
-        camera-controls
-        ar ar-modes="scene-viewer quick-look webxr"
-        ar-scale="fixed"
-        camera-orbit="0deg 75deg 3m"
-        min-camera-orbit="auto auto 2m"
-        max-camera-orbit="auto auto 6m"
-        camera-target="0m 0m 0m"
-        field-of-view="30deg"
-        exposure="1.2"
-        shadow-intensity="1"
-        loading="eager"
-        reveal="auto">
-        
-        <!-- Loading indicator -->
-        <div class="loading-overlay" id="loadingOverlay">
-          <div class="loading-spinner"></div>
-          <div>Vmaxバイクを読み込み中...</div>
-        </div>
-        
-        <!-- Error message -->
-        <div class="error-message" id="errorMessage">
-          <div>🚫 バイクの読み込みに失敗しました</div>
-          <div style="margin-top:10px;font-size:12px;">
-            ネットワーク接続を確認してページを再読み込みしてください
-          </div>
-        </div>
-      </model-viewer>
-
       <div class="birthday-message">
         🎂 パパ、誕生日おめでとう！🎉<br>
         これからもよろしくね！✨<br>
@@ -287,60 +256,80 @@
       </div>
     </div>
 
+    <!-- Model Viewer (always visible, controlled by z-index) -->
+    <model-viewer id="mv"
+      poster="poster.png"
+      src="vmax_bike_only_v2_black.glb"
+      ios-src="vmax_bike_only_v2_black.usdz"
+      camera-controls
+      ar ar-modes="scene-viewer quick-look webxr"
+      ar-scale="fixed"
+      camera-orbit="0deg 75deg 3m"
+      min-camera-orbit="auto auto 2m"
+      max-camera-orbit="auto auto 6m"
+      camera-target="0m 0m 0m"
+      field-of-view="30deg"
+      exposure="1.2"
+      shadow-intensity="1">
+    </model-viewer>
+
     <script>
-      // Unlock functionality with enhanced animations
+      // Unlock functionality with elegant animations
       document.getElementById('unlockKey').addEventListener('click', function() {
         const lockScreen = document.getElementById('lockScreen');
         const arContent = document.getElementById('arContent');
+        const modelViewer = document.getElementById('mv');
         
-        // Add click animation with scale and rotation
-        this.style.transform = 'scale(0.9) rotate(15deg)';
-        this.style.background = 'linear-gradient(145deg,#ff6b6b,#feca57)';
+        // Add subtle click animation
+        this.style.transform = 'translateY(-2px) scale(0.98)';
+        this.style.boxShadow = '0 4px 20px rgba(0,0,0,0.4)';
         
-        // Create celebration sparkles
-        for(let i = 0; i < 12; i++) {
+        // Create gentle celebration effects
+        for(let i = 0; i < 6; i++) {
           setTimeout(() => {
-            createCelebrationSparkle();
-          }, i * 100);
+            createElegantSparkle();
+          }, i * 200);
         }
         
         setTimeout(() => {
           // Hide lock screen with smooth animation
           lockScreen.classList.add('hidden');
           
-          // Show AR content after lock screen animation completes
+          // Show AR content and model viewer after lock screen animation completes
           setTimeout(() => {
             arContent.classList.add('show');
+            modelViewer.classList.add('show');
           }, 400);
-        }, 800);
+        }, 600);
       });
 
-      // Enhanced sparkle effects on key hover
+      // Elegant hover effects on key
       const key = document.getElementById('unlockKey');
       key.addEventListener('mouseenter', function() {
-        // Create gentle sparkles around the key
-        for(let i = 0; i < 8; i++) {
+        // Create subtle sparkles around the key
+        for(let i = 0; i < 4; i++) {
           setTimeout(() => {
-            createHoverSparkle(this);
-          }, i * 150);
+            createSubtleSparkle(this);
+          }, i * 300);
         }
       });
 
-      // Create sparkles around the key on hover
-      function createHoverSparkle(element) {
+      // Create subtle sparkles around the key on hover
+      function createSubtleSparkle(element) {
         const sparkle = document.createElement('div');
-        sparkle.innerHTML = '✨';
+        sparkle.innerHTML = '✦';
         sparkle.style.position = 'fixed';
-        sparkle.style.fontSize = '24px';
+        sparkle.style.fontSize = '16px';
+        sparkle.style.color = 'rgba(255,255,255,0.6)';
         sparkle.style.pointerEvents = 'none';
         sparkle.style.zIndex = '1001';
-        sparkle.style.animation = 'sparkleFloat 2s ease-out forwards';
+        sparkle.style.animation = 'elegantFloat 2.5s ease-out forwards';
         
         const rect = element.getBoundingClientRect();
         const centerX = rect.left + rect.width / 2;
         const centerY = rect.top + rect.height / 2;
         const angle = Math.random() * 360;
-        const distance = 80 + Math.random() * 40;
+        const distance = 60 + Math.random() * 30;
         
         sparkle.style.left = (centerX + Math.cos(angle) * distance) + 'px';
         sparkle.style.top = (centerY + Math.sin(angle) * distance) + 'px';
@@ -351,21 +340,22 @@
           if(document.body.contains(sparkle)) {
             document.body.removeChild(sparkle);
           }
-        }, 2000);
+        }, 2500);
       }
 
-      // Create celebration sparkles when unlocking
-      function createCelebrationSparkle() {
+      // Create elegant celebration sparkles when unlocking
+      function createElegantSparkle() {
         const sparkle = document.createElement('div');
-        const sparkles = ['🎉', '✨', '🎊', '💖', '🌟'];
+        const sparkles = ['✦', '✧', '⋆', '✩', '✪'];
         sparkle.innerHTML = sparkles[Math.floor(Math.random() * sparkles.length)];
         sparkle.style.position = 'fixed';
-        sparkle.style.fontSize = (20 + Math.random() * 15) + 'px';
+        sparkle.style.fontSize = (14 + Math.random() * 8) + 'px';
+        sparkle.style.color = 'rgba(255,255,255,' + (0.4 + Math.random() * 0.4) + ')';
         sparkle.style.pointerEvents = 'none';
         sparkle.style.zIndex = '1001';
-        sparkle.style.left = Math.random() * window.innerWidth + 'px';
-        sparkle.style.top = Math.random() * window.innerHeight + 'px';
-        sparkle.style.animation = 'sparkleFloat 3s ease-out forwards';
+        sparkle.style.left = (window.innerWidth * 0.2 + Math.random() * window.innerWidth * 0.6) + 'px';
+        sparkle.style.top = (window.innerHeight * 0.1 + Math.random() * window.innerHeight * 0.8) + 'px';
+        sparkle.style.animation = 'elegantFloat 4s ease-out forwards';
         
         document.body.appendChild(sparkle);
         
@@ -373,7 +363,7 @@
           if(document.body.contains(sparkle)) {
             document.body.removeChild(sparkle);
           }
-        }, 3000);
+        }, 4000);
       }
 
       // Add touch feedback for mobile devices
@@ -397,47 +387,20 @@
         lastTouchEnd = now;
       }, false);
 
-      // Model viewer event handling
+      // Simple model viewer logging
       const modelViewer = document.getElementById('mv');
-      const loadingOverlay = document.getElementById('loadingOverlay');
-      const errorMessage = document.getElementById('errorMessage');
-
-      // Show loading initially
-      loadingOverlay.style.display = 'block';
-
+      console.log('Model viewer initialized');
+      console.log('GLB source:', modelViewer.src);
+      
       // Handle successful load
       modelViewer.addEventListener('load', function() {
         console.log('Model loaded successfully');
-        loadingOverlay.style.display = 'none';
-        errorMessage.style.display = 'none';
-      });
-
-      // Handle loading progress
-      modelViewer.addEventListener('progress', function(event) {
-        const progress = event.detail.totalProgress;
-        console.log('Loading progress:', Math.round(progress * 100) + '%');
       });
 
       // Handle errors
       modelViewer.addEventListener('error', function(event) {
         console.error('Model loading error:', event.detail);
-        loadingOverlay.style.display = 'none';
-        errorMessage.style.display = 'block';
       });
-
-      // Fallback timeout - if model doesn't load within 10 seconds
-      setTimeout(function() {
-        if (loadingOverlay.style.display !== 'none') {
-          console.warn('Model loading timeout');
-          loadingOverlay.style.display = 'none';
-          errorMessage.style.display = 'block';
-        }
-      }, 10000);
-
-      // Debug: Log model viewer status
-      console.log('Model viewer initialized');
-      console.log('GLB source:', modelViewer.src);
-      console.log('USDZ source:', modelViewer.getAttribute('ios-src'));
     </script>
   </body>
 </html>
