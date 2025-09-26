@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="ja">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Happy Birthday — VMAX AR</title>
+    <title>🎂 お誕生日おめでとう — VMAX AR</title>
     <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
     <style>
       :root{
@@ -12,7 +12,7 @@
         --muted:#bfbfbf;
         --accent:#ffce4a;
       }
-      html,body{height:100%;margin:0;background:var(--bg);color:var(--fg);font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
+      html,body{height:100%;margin:0;background:var(--bg);color:var(--fg);font-family:'Hiragino Sans','ヒラギノ角ゴシック',system-ui,-apple-system,sans-serif}
       header{position:fixed;left:0;right:0;top:0;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;background:linear-gradient(180deg, rgba(0,0,0,.7), rgba(0,0,0,0));z-index:10}
       .brand{font-weight:700;letter-spacing:.3px}
       .cta{display:flex;gap:8px;align-items:center}
@@ -30,10 +30,10 @@
   </head>
   <body>
     <header>
-      <div class="brand">🎂 Happy Birthday — VMAX AR</div>
+      <div class="brand">🎂 お誕生日おめでとう — VMAX AR</div>
       <div class="cta">
-        <button class="btn" id="btnAR">Open in AR</button>
-        <button class="btn secondary" id="btnShare">Share</button>
+        <button class="btn" id="btnAR">ARで見る</button>
+        <button class="btn secondary" id="btnShare">共有</button>
       </div>
     </header>
 
@@ -58,12 +58,12 @@
 
     <footer>
       <div class="credit">
-        Based on <a href="https://sketchfab.com/3d-models/v-max-on-road-onjaaninoja-bridge-60d36a5b91ec428ab5528b59028a205e">"V Max-on- Road- Onjaaninoja_bridge"</a> by <a href="https://sketchfab.com/TG13730">TG13730</a> (CC-BY-4.0)
+        <a href="https://sketchfab.com/3d-models/v-max-on-road-onjaaninoja-bridge-60d36a5b91ec428ab5528b59028a205e">"V Max-on- Road- Onjaaninoja_bridge"</a> by <a href="https://sketchfab.com/TG13730">TG13730</a> (CC-BY-4.0) をベースに作成
       </div>
       <div class="help">
-        <span class="pill">① Tap “Open in AR”</span>
-        <span class="pill">② Point to floor</span>
-        <span class="pill">③ Pinch to zoom / drag to rotate</span>
+        <span class="pill">① 「ARで見る」をタップ</span>
+        <span class="pill">② 床を向ける</span>
+        <span class="pill">③ ピンチで拡大 / ドラッグで回転</span>
       </div>
     </footer>
 
@@ -92,7 +92,7 @@
       });
 
       document.getElementById('btnShare').addEventListener('click', async () => {
-        const data = { title: document.title, url: location.href, text: 'VMAXをARで配置してみてね！' };
+        const data = { title: document.title, url: location.href, text: 'パパの誕生日プレゼント！VMAXをARで体験してみてね！🎂' };
         if (navigator.share) {
           try { await navigator.share(data); } catch(e){}
         } else {
