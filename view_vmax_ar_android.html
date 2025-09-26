@@ -15,129 +15,40 @@
       .birthday-message{position:fixed;right:12px;top:12px;background:linear-gradient(135deg,#ff6b6b,#feca57);padding:16px 20px;border-radius:16px;color:#fff;font:16px/1.4 'Hiragino Sans','ヒラギノ角ゴシック',sans-serif;box-shadow:0 4px 16px rgba(255,107,107,0.4);animation:pulse 2s infinite;}
       @keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.05);}}
       .instructions{position:fixed;right:12px;bottom:12px;background:rgba(255,255,255,0.9);padding:12px 16px;border-radius:12px;color:#333;font:13px/1.4 'Hiragino Sans','ヒラギノ角ゴシック',sans-serif;max-width:200px;}
-      
-      /* Lock Screen Styles */
-      .lock-screen{position:fixed;top:0;left:0;width:100%;height:100%;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);display:flex;flex-direction:column;justify-content:center;align-items:center;z-index:1000;transition:all 0.8s cubic-bezier(0.4,0,0.2,1);}
-      .lock-screen.hidden{opacity:0;visibility:hidden;transform:scale(0.9);}
-      .lock-key{width:120px;height:120px;background:linear-gradient(145deg,#ffd700,#ffed4e);border-radius:50%;display:flex;justify-content:center;align-items:center;font-size:60px;cursor:pointer;box-shadow:0 20px 40px rgba(255,215,0,0.3),inset 0 2px 10px rgba(255,255,255,0.3);transition:all 0.3s ease;animation:keyFloat 3s ease-in-out infinite;}
-      .lock-key:hover{transform:scale(1.1);box-shadow:0 25px 50px rgba(255,215,0,0.4),inset 0 2px 15px rgba(255,255,255,0.4);}
-      .lock-key:active{transform:scale(0.95);}
-      .lock-title{color:#fff;font:28px/1.3 'Hiragino Sans','ヒラギノ角ゴシック',sans-serif;text-align:center;margin-bottom:20px;text-shadow:0 2px 10px rgba(0,0,0,0.3);}
-      .lock-subtitle{color:rgba(255,255,255,0.8);font:16px/1.4 'Hiragino Sans','ヒラギノ角ゴシック',sans-serif;text-align:center;margin-bottom:40px;text-shadow:0 1px 5px rgba(0,0,0,0.2);}
-      .lock-hint{color:rgba(255,255,255,0.6);font:14px/1.4 'Hiragino Sans','ヒラギノ角ゴシック',sans-serif;text-align:center;margin-top:30px;animation:pulse 2s infinite;}
-      
-      @keyframes keyFloat{0%,100%{transform:translateY(0px);}50%{transform:translateY(-10px);}}
-      
-      /* AR Screen initially hidden */
-      .ar-content{opacity:0;transition:opacity 1s ease-in-out 0.5s;}
-      .ar-content.show{opacity:1;}
     </style>
   </head>
   <body>
-    <!-- Lock Screen -->
-    <div class="lock-screen" id="lockScreen">
-      <div class="lock-title">🎁 パパへのプレゼント 🎁</div>
-      <div class="lock-subtitle">特別なVmaxバイクのAR体験をお楽しみください</div>
-      <div class="lock-key" id="unlockKey">🔑</div>
-      <div class="lock-hint">鍵をタップして開始</div>
+    <!-- If your GLB filename differs, change src and the fallback href below -->
+    <model-viewer id="mv"
+      src="vmax_bike_only_v2_black.glb"
+      camera-controls
+      ar ar-modes="scene-viewer webxr"
+      ar-scale="fixed"
+      camera-orbit="0deg 75deg 3m"
+      min-camera-orbit="auto auto 2m"
+      max-camera-orbit="auto auto 6m"
+      camera-target="0m 0m 0m"
+      field-of-view="30deg"
+      exposure="1.2"
+      shadow-intensity="1">
+    </model-viewer>
+
+    <div class="birthday-message">
+      🎉 お誕生日おめでとう！🎂<br>
+      素敵な一年になりますように✨
     </div>
 
-    <!-- AR Content (initially hidden) -->
-    <div class="ar-content" id="arContent">
-      <!-- If your GLB filename differs, change src and the fallback href below -->
-      <model-viewer id="mv"
-        src="vmax_bike_only_v2_black.glb"
-        camera-controls
-        ar ar-modes="scene-viewer webxr"
-        ar-scale="fixed"
-        camera-orbit="0deg 75deg 3m"
-        min-camera-orbit="auto auto 2m"
-        max-camera-orbit="auto auto 6m"
-        camera-target="0m 0m 0m"
-        field-of-view="30deg"
-        exposure="1.2"
-        shadow-intensity="1">
-      </model-viewer>
-
-      <div class="birthday-message">
-        🎉 パパ、誕生日おめでとう！🎂<br>
-        これからもよろしくね！✨
-      </div>
-
-      <div class="ui">
-        <a class="fallback" rel="ar" href="vmax_bike_only_v2_black.glb">ARで見る（Scene Viewer）</a>
-      </div>
-
-      <div class="instructions">
-        📱 スマホを動かしてバイクを様々な角度から見てみよう！<br>
-        🔍 ピンチで拡大・縮小できます
-      </div>
-
-      <div class="credit">
-        "V Max-on- Road- Onjaaninoja_bridge" (TG13730, CC-BY-4.0) をベースに作成
-      </div>
+    <div class="ui">
+      <a class="fallback" rel="ar" href="vmax_bike_only_v2_black.glb">ARで見る（Scene Viewer）</a>
     </div>
 
-    <script>
-      // Unlock functionality
-      document.getElementById('unlockKey').addEventListener('click', function() {
-        const lockScreen = document.getElementById('lockScreen');
-        const arContent = document.getElementById('arContent');
-        
-        // Add click animation
-        this.style.transform = 'scale(0.9)';
-        
-        setTimeout(() => {
-          // Hide lock screen with animation
-          lockScreen.classList.add('hidden');
-          
-          // Show AR content after lock screen animation
-          setTimeout(() => {
-            arContent.classList.add('show');
-          }, 400);
-        }, 200);
-      });
+    <div class="instructions">
+      📱 スマホを動かしてバイクを様々な角度から見てみよう！<br>
+      🔍 ピンチで拡大・縮小できます
+    </div>
 
-      // Add some sparkle effects on key hover
-      const key = document.getElementById('unlockKey');
-      key.addEventListener('mouseenter', function() {
-        // Add sparkle effect
-        for(let i = 0; i < 6; i++) {
-          setTimeout(() => {
-            createSparkle(this);
-          }, i * 100);
-        }
-      });
-
-      function createSparkle(element) {
-        const sparkle = document.createElement('div');
-        sparkle.innerHTML = '✨';
-        sparkle.style.position = 'absolute';
-        sparkle.style.fontSize = '20px';
-        sparkle.style.pointerEvents = 'none';
-        sparkle.style.animation = 'sparkleFloat 1.5s ease-out forwards';
-        
-        const rect = element.getBoundingClientRect();
-        sparkle.style.left = (rect.left + Math.random() * rect.width) + 'px';
-        sparkle.style.top = (rect.top + Math.random() * rect.height) + 'px';
-        
-        document.body.appendChild(sparkle);
-        
-        setTimeout(() => {
-          document.body.removeChild(sparkle);
-        }, 1500);
-      }
-
-      // Add sparkle animation
-      const style = document.createElement('style');
-      style.textContent = `
-        @keyframes sparkleFloat {
-          0% { opacity: 1; transform: translateY(0px) scale(0.5); }
-          50% { opacity: 1; transform: translateY(-30px) scale(1); }
-          100% { opacity: 0; transform: translateY(-60px) scale(0.5); }
-        }
-      `;
-      document.head.appendChild(style);
-    </script>
+    <div class="credit">
+      "V Max-on- Road- Onjaaninoja_bridge" (TG13730, CC-BY-4.0) をベースに作成
+    </div>
   </body>
 </html>
