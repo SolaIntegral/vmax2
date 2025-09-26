@@ -173,44 +173,6 @@
         50%{transform:translateY(-8px);}
       }
       
-      /* Enhanced AR FAB Button */
-      .ar-fab{
-        position:fixed;
-        right:20px;bottom:20px;
-        width:70px;height:70px;
-        background:linear-gradient(135deg,#ff6b6b,#feca57);
-        border-radius:50%;
-        display:flex;
-        justify-content:center;
-        align-items:center;
-        text-decoration:none;
-        color:#fff;
-        font:bold 16px/1 'Hiragino Sans','ヒラギノ角ゴシック',sans-serif;
-        box-shadow:0 8px 25px rgba(255,107,107,0.4), 0 4px 15px rgba(0,0,0,0.3);
-        transition:all 0.3s cubic-bezier(0.4,0,0.2,1);
-        z-index:-1;
-        opacity:0;
-        animation:fabPulse 3s ease-in-out infinite;
-      }
-      
-      .ar-fab.show{
-        z-index:100;
-        opacity:1;
-      }
-      
-      .ar-fab:hover{
-        transform:scale(1.1) translateY(-3px);
-        box-shadow:0 12px 35px rgba(255,107,107,0.5), 0 6px 20px rgba(0,0,0,0.4);
-      }
-      
-      .ar-fab:active{
-        transform:scale(1.05) translateY(-1px);
-      }
-      
-      @keyframes fabPulse{
-        0%,100%{box-shadow:0 8px 25px rgba(255,107,107,0.4), 0 4px 15px rgba(0,0,0,0.3);}
-        50%{box-shadow:0 12px 35px rgba(255,107,107,0.6), 0 6px 20px rgba(0,0,0,0.4);}
-      }
       
       .instructions{
         position:fixed;
@@ -263,7 +225,7 @@
         • スマホを動かして360度見回そう<br>
         • ピンチで拡大・縮小<br>
         • ドラッグで回転<br>
-        • 右下のARボタンで現実空間に配置
+        • model-viewerのARボタンで現実空間に配置
       </div>
 
       <div class="credit">
@@ -271,8 +233,6 @@
       </div>
     </div>
 
-    <!-- Enhanced AR FAB Button -->
-    <a class="ar-fab" rel="ar" href="vmax_bike_only_v2_black.glb" title="ARで見る">AR</a>
 
     <!-- Model Viewer (always visible, controlled by z-index) -->
     <model-viewer id="mv"
@@ -297,7 +257,6 @@
         const lockScreen = document.getElementById('lockScreen');
         const arContent = document.getElementById('arContent');
         const modelViewer = document.getElementById('mv');
-        const arFab = document.querySelector('.ar-fab');
         
         // Add subtle click animation
         this.style.transform = 'translateY(-2px) scale(0.98)';
@@ -314,11 +273,10 @@
           // Hide lock screen with smooth animation
           lockScreen.classList.add('hidden');
           
-          // Show AR content, model viewer, and AR button after lock screen animation completes
+          // Show AR content and model viewer after lock screen animation completes
           setTimeout(() => {
             arContent.classList.add('show');
             modelViewer.classList.add('show');
-            if (arFab) arFab.classList.add('show');
           }, 400);
         }, 600);
       });
